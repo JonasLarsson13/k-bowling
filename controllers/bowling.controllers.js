@@ -40,32 +40,6 @@ export const httpCreateBooking = async (req, res) => {
   }
 };
 
-export const httpSearchBookingsByDate = async (req, res) => {
-  const { startDate, endDate } = req.body;
-
-  try {
-    const parsedStartDate = parse(startDate, "dd/MM", new Date());
-    const formattedStartDate = format(new Date(parsedStartDate), "yyyy-MM-dd");
-    const parsedEndDate = parse(endDate, "dd/MM", new Date());
-    const formattedEndDate = format(
-      endOfDay(new Date(parsedEndDate)),
-      "yyyy-MM-dd HH:mm"
-    );
-    const bookings = await searchBookingsByDate(
-      formattedStartDate,
-      formattedEndDate
-    );
-    if (!bookings || bookings.length === 0)
-      return res.status(404).json({
-        success: true,
-        message: "No bookings found between that dates",
-      });
-    return res.status(200).json({ success: true, bookings });
-  } catch (error) {
-    return res.status(500).json({ success: false, error: error.message });
-  }
-};
-
 export const httpGetBooking = async (req, res) => {
   const { bookingNr } = req.params;
 
@@ -129,6 +103,32 @@ export const httpUpdateBooking = async (req, res) => {
     return res
       .status(200)
       .json({ success: true, bookingNr, message: "Booking updated" });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+export const httpSearchBookedLanesByDate = async (req, res) => {
+  const { startDate, endDate } = req.body;
+
+  try {
+    const parsedStartDate = parse(startDate, "dd/MM", new Date());
+    const formattedStartDate = format(new Date(parsedStartDate), "yyyy-MM-dd");
+    const parsedEndDate = parse(endDate, "dd/MM", new Date());
+    const formattedEndDate = format(
+      endOfDay(new Date(parsedEndDate)),
+      "yyyy-MM-dd HH:mm"
+    );
+    const bookings = await searchBookingsByDate(
+      formattedStartDate,
+      formattedEndDate
+    );
+    if (!bookings || bookings.length === 0)
+      return res.status(404).json({
+        success: true,
+        message: "No bookings found between that dates",
+      });
+    return res.status(200).json({ success: true, bookings });
   } catch (error) {
     return res.status(500).json({ success: false, error: error.message });
   }
