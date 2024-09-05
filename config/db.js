@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const connectDB = async () => {
   const mongoURL =
-    "mongodb+srv://examinationbowlingjl23:fyZ9XbFR4cCYdvZY@bowling.przcxr0.mongodb.net/Bowling?retryWrites=true&w=majority";
+    "";
   try {
     await mongoose.connect(mongoURL, {
       useNewUrlParser: true,
